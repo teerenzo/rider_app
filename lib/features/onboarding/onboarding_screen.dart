@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:rider_app/features/authentication/welcome.dart';
 import 'package:rider_app/features/onboarding/onboarding_contents.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/size_config.dart';
@@ -45,16 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 children: [
                   contents.length - 1 != _currentPage
                       ? TextButton(
-                          onPressed: () async {
-                            // await LocalStorage.setVisit().then((value) {
-                            //   visit = true;
-                            //   Navigator.of(context).pushReplacement(
-                            //     MaterialPageRoute(
-                            //       builder: (context) => const WelcomeScreen(),
-                            //     ),
-                            //   );
-                            // });
-                          },
+                          onPressed: () async {},
                           style: TextButton.styleFrom(
                             elevation: 0,
                             textStyle: TextStyle(
@@ -119,27 +111,43 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               flex: 0,
               child: Container(
                 padding: const EdgeInsets.only(bottom: 40),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _currentPage == 0
-                        ? Image.asset(
-                            "assets/icons/stepper1.png",
-                            height: 86,
-                            width: 86,
-                          )
-                        : _currentPage == 1
-                            ? Image.asset(
-                                "assets/icons/stepper2.png",
-                                height: 86,
-                                width: 86,
-                              )
-                            : SvgPicture.asset(
-                                "assets/icons/stepper3.svg",
-                                height: 86,
-                                width: 86,
-                              ),
-                  ],
+                child: GestureDetector(
+                  onTap: () {
+                    if (_currentPage == contents.length - 1) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const WelcomeScreen(),
+                        ),
+                      );
+                    } else {
+                      _controller.nextPage(
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeIn,
+                      );
+                    }
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _currentPage == 0
+                          ? Image.asset(
+                              "assets/icons/stepper1.png",
+                              height: 86,
+                              width: 86,
+                            )
+                          : _currentPage == 1
+                              ? Image.asset(
+                                  "assets/icons/stepper2.png",
+                                  height: 86,
+                                  width: 86,
+                                )
+                              : SvgPicture.asset(
+                                  "assets/icons/stepper3.svg",
+                                  height: 86,
+                                  width: 86,
+                                ),
+                    ],
+                  ),
                 ),
               ),
             ),
