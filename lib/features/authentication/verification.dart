@@ -47,47 +47,44 @@ class _VerificationScreenState extends State<VerificationScreen> {
     return GlobalLayout(
       child: Column(
         children: [
-          Expanded(
-            flex: 1,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 20),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Phone verification',
-                      style: Styles.headingExtraLargeTitleBlack,
-                    ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                RichText(
+                  text: const TextSpan(
+                    text: 'Phone verification',
+                    style: Styles.headingExtraLargeTitleBlack,
                   ),
-                  const Text(
-                    'Enter your OTP code',
-                    style: Styles.paragraphMediumBlack,
+                ),
+                const Text(
+                  'Enter your OTP code',
+                  style: Styles.paragraphMediumBlack,
+                ),
+                const SizedBox(height: 40),
+                OTPTextField(
+                  controller: otpController,
+                  otpFieldStyle: OtpFieldStyle(
+                    borderColor: AppColors.primaryColor,
+                    focusBorderColor: AppColors.primaryColor,
                   ),
-                  const SizedBox(height: 40),
-                  OTPTextField(
-                    controller: otpController,
-                    otpFieldStyle: OtpFieldStyle(
-                      borderColor: AppColors.primaryColor,
-                      focusBorderColor: AppColors.primaryColor,
-                    ),
-                    length: 5,
-                    width: MediaQuery.of(context).size.width,
-                    fieldWidth: MediaQuery.of(context).size.width / 6 - 13,
-                    style: const TextStyle(fontSize: 17),
-                    textFieldAlignment: MainAxisAlignment.spaceBetween,
-                    fieldStyle: FieldStyle.box,
-                    onChanged: (pin) async {
-                      setState(() {
-                        code = pin;
-                      });
-                    },
-                  ),
-                ],
-              ),
+                  length: 5,
+                  width: MediaQuery.of(context).size.width,
+                  fieldWidth: MediaQuery.of(context).size.width / 6 - 13,
+                  style: const TextStyle(fontSize: 17),
+                  textFieldAlignment: MainAxisAlignment.spaceBetween,
+                  fieldStyle: FieldStyle.box,
+                  onChanged: (pin) async {
+                    setState(() {
+                      code = pin;
+                    });
+                  },
+                ),
+              ],
             ),
           ),
           PrimaryBtn(
