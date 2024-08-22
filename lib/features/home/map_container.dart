@@ -18,24 +18,24 @@ class _MapContainerState extends State<MapContainer> {
     return FlutterMap(
       options: MapOptions(
         initialCenter:
-            LatLng(51.509364, -0.128928), // Center the map over London
+            LatLng(51.509364, -0.128928), 
         initialZoom: 9.2,
       ),
       children: [
         TileLayer(
-          // Display map tiles from any source
+
           urlTemplate:
               'https://tile.openstreetmap.org/{z}/{x}/{y}.png', // OSMF's Tile Server
           userAgentPackageName: 'com.example.app',
           maxNativeZoom:
-              19, // Scale tiles when the server doesn't support higher zoom levels
+              19, 
         ),
         RichAttributionWidget(
-          // Include a stylish prebuilt attribution widget that meets all requirments
+      
           attributions: [
             TextSourceAttribution(
               'OpenStreetMap contributors',
-              onTap: () => {}, // (external)
+              onTap: () => {}, 
             ),
       
           ],

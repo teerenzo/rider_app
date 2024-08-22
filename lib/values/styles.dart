@@ -62,6 +62,14 @@ abstract class Styles {
     height: 1.5,
   );
 
+  static const TextStyle textSmallWhite = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 12,
+    color: Colors.white,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
   static const TextStyle paragraphSmallGrey = TextStyle(
     fontFamily: _poppins,
     fontSize: 18,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rider_app/features/transport/complaint.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:rider_app/widgets/global_layout.dart';
@@ -15,9 +16,7 @@ List<MenuItem> menus = [
   MenuItem(
     title: 'Complain',
     icon: Icons.compare_outlined,
-    onTap: () {
-      print('settings');
-    },
+    onTap: () {},
   ),
   MenuItem(
     title: 'Referral',
@@ -96,7 +95,19 @@ class MenuComponent extends StatelessWidget {
           const SizedBox(height: 20),
           // menu items
           Column(
-            children: menus.map((menu) => menu).toList(),
+            children: menus.map((menu) {
+              return GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ComplaintScreen()));
+                },
+                child: MenuItem(
+                  title: menu.title,
+                  icon: menu.icon,
+                  onTap: menu.onTap,
+                ),
+              );
+            }).toList(),
           ),
         ],
       ),

@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:rider_app/features/home/map_container.dart';
+import 'package:rider_app/features/transport/select_type.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/size_config.dart';
 import 'package:rider_app/widgets/custom_scaffold.dart';
 import 'package:rider_app/widgets/input_field.dart';
 import 'package:rider_app/widgets/menu_component.dart';
+import 'package:rider_app/widgets/modal/addres.dart';
 import 'package:rider_app/widgets/primary_btn.dart';
+
+import '../../values/styles.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -223,21 +227,58 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                InputField(
-                                  fillColor: AppColors.white.withOpacity(0.7),
-                                  hintText: 'Where would you go?',
-                                  prefixIcon: Icon(
-                                    Icons.search_rounded,
-                                    color: AppColors.secondary,
+                                GestureDetector(
+                                  onTap: () {
+                                    // bottomSheet(context);
+
+                                    showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        constraints: BoxConstraints(
+                                          maxHeight: SizeConfig.screenH! * 0.8,
+                                          minHeight: SizeConfig.screenH! * 0.3,
+                                        ),
+                                        builder: (context) {
+                                          return AddressModal();
+                                        });
+                                  },
+                                  child: Container(
+                                    height: 48,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white.withOpacity(0.7),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(
+                                              Icons.search_rounded,
+                                              color: AppColors.secondary,
+                                            ),
+                                            SizedBox(width: 5),
+                                            Text('Where would you go?',
+                                                style: Styles.smallSecondary),
+                                          ],
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Icon(
+                                            Icons.favorite_border_rounded,
+                                            color: AppColors.fieldGray,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  suffixIcon: Icon(
-                                    Icons.favorite_border_rounded,
-                                    color: AppColors.secondary,
-                                  ),
-                                  onChanged: (value) {},
                                 ),
                                 const SizedBox(height: 10),
                                 Container(
+                                  height: 48,
                                   decoration: BoxDecoration(
                                     color: AppColors.primaryColorLight
                                         .withOpacity(0.7),
@@ -253,6 +294,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         onTap: () {
                                           if (!isTransportSelected)
                                             toggleSwitch();
+
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SelectType()));
                                         },
                                         btnText: 'Transport',
                                         customWidth:
