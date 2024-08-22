@@ -4,12 +4,20 @@ import 'package:rider_app/values/colors.dart';
 class GlobalLayout extends StatelessWidget {
   final Widget child;
   final bool showBack;
-  const GlobalLayout({Key? key, required this.child, this.showBack = true})
+  final EdgeInsets padding;
+  final Widget? bottomNavigationBar;
+  const GlobalLayout(
+      {Key? key,
+      required this.child,
+      this.showBack = true,
+      this.padding = const EdgeInsets.all(20),
+      this.bottomNavigationBar})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
+      bottomNavigationBar: bottomNavigationBar,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -17,7 +25,7 @@ class GlobalLayout extends StatelessWidget {
             children: [
               if (showBack)
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  padding: padding,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

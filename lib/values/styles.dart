@@ -13,13 +13,39 @@ abstract class Styles {
     height: 1.2,
   );
 
-  static const TextStyle navLinkStyle = TextStyle(
-    color: Color(0xFFAFAFAF),
-    fontSize: 12,
-    fontFamily: 'Poppins',
-    fontWeight: FontWeight.w600,
-    height: 1.6,
+  static const TextStyle mediumSecondary = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 16,
+    color: AppColors.secondary,
+    fontWeight: FontWeight.w400,
+    height: 1.2,
   );
+
+  // large secondary
+  static const TextStyle largeSecondary = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 18,
+    color: AppColors.secondary,
+    fontWeight: FontWeight.w500,
+    height: 1.2,
+  );
+
+  static const TextStyle smallSecondary = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 12,
+    color: AppColors.secondary,
+    fontWeight: FontWeight.w500,
+    height: 1.2,
+  );
+
+  static const TextStyle smallPrimary = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 12,
+    color: AppColors.primaryColor,
+    fontWeight: FontWeight.w400,
+    height: 1.2,
+  );
+
   static const TextStyle placeholderMediumBlack = TextStyle(
     color: Color(0xFFAFAFAF),
     fontSize: 16,
@@ -31,6 +57,14 @@ abstract class Styles {
   static const TextStyle textMediumWhite = TextStyle(
     fontFamily: _poppins,
     fontSize: 16,
+    color: Colors.white,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+  );
+
+  static const TextStyle textSmallWhite = TextStyle(
+    fontFamily: _poppins,
+    fontSize: 12,
     color: Colors.white,
     fontWeight: FontWeight.w400,
     height: 1.5,

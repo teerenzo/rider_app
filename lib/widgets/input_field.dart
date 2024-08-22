@@ -19,6 +19,9 @@ class InputField extends StatelessWidget {
     this.obscureText = false,
     this.changePasswordVisibility,
     this.passwordVisible = false,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.fillColor,
   }) : super(key: key);
 
   final String hintText;
@@ -36,6 +39,9 @@ class InputField extends StatelessWidget {
   final bool obscureText;
   final bool passwordVisible;
   final Function? changePasswordVisibility;
+  final Icon? prefixIcon;
+  final Icon? suffixIcon;
+  final Color? fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +62,7 @@ class InputField extends StatelessWidget {
             obscureText: obscureText ? !passwordVisible : false,
             onChanged: (value) => onChanged(value),
             decoration: InputDecoration(
-              fillColor: AppColors.white,
+              fillColor: fillColor ?? AppColors.white,
               filled: true,
               contentPadding:
                   const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
@@ -84,19 +90,21 @@ class InputField extends StatelessWidget {
                 color: AppColors.gray,
                 fontSize: 16,
               ),
-              suffixIcon: obscureText
-                  ? IconButton(
-                      onPressed: () {
-                        changePasswordVisibility!();
-                      },
-                      icon: Icon(
-                        passwordVisible
-                            ? Icons.visibility
-                            : Icons.visibility_off,
-                        color: Colors.grey,
-                      ),
-                    )
-                  : null,
+              suffixIcon: suffixIcon ??
+                  (obscureText
+                      ? IconButton(
+                          onPressed: () {
+                            changePasswordVisibility!();
+                          },
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                        )
+                      : null),
+              prefixIcon: prefixIcon != null ? prefixIcon : null,
             ),
           ),
         ),
