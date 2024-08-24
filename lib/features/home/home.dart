@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:rider_app/features/home/map_container.dart';
 import 'package:rider_app/features/transport/select_type.dart';
 import 'package:rider_app/values/colors.dart';
@@ -13,17 +15,16 @@ import 'package:rider_app/widgets/primary_btn.dart';
 
 import '../../values/styles.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isMenuOpen = false;
 
-  // drawer  state
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
@@ -191,6 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               PrimaryBtn(
+                                customHeight: 54,
                                 onTap: () {},
                                 btnText: 'Rental',
                                 customWidth: 150,
@@ -203,13 +205,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               Container(
                                 width: 34,
                                 height: 34,
+                                padding: const EdgeInsets.all(5.0),
                                 decoration: BoxDecoration(
                                   color: AppColors.white,
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                child: const Icon(
-                                  Icons.location_searching_outlined,
-                                  color: AppColors.secondary,
+                                child: SvgPicture.asset(
+                                  "assets/icons/location.svg",
+                                  height: 24,
+                                  width: 24,
                                 ),
                               ),
                             ],
@@ -236,10 +240,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                         isScrollControlled: true,
                                         constraints: BoxConstraints(
                                           maxHeight: SizeConfig.screenH! * 0.8,
-                                          minHeight: SizeConfig.screenH! * 0.3,
+                                          // minHeight: SizeConfig.screenH! * 0.3,
                                         ),
                                         builder: (context) {
-                                          return AddressModal();
+                                          return   AddressModal();
                                         });
                                   },
                                   child: Container(

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rider_app/features/transport/rent.dart';
 import 'package:rider_app/models/vehicle.dart';
 import 'package:rider_app/values/colors.dart';
+import 'package:rider_app/values/size_config.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:rider_app/widgets/global_layout.dart';
 
@@ -44,252 +45,256 @@ class CarDetails extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Container(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              vehicle.modelName,
-              style: Styles.largeSecondary.copyWith(
-                fontSize: 24,
-              ),
-              textAlign: TextAlign.start,
-            ),
-            Row(
-              children: [
-                const Icon(Icons.star_outlined, color: AppColors.warning),
-                const SizedBox(width: 5),
-                Text(
-                  "4.9 (531 reviews)",
-                  style: Styles.largeSecondary.copyWith(
-                    fontSize: 16,
-                  ),
+        height: SizeConfig.screenH! * 0.872,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                vehicle.modelName,
+                style: Styles.largeSecondary.copyWith(
+                  fontSize: 24,
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            // casousel slider
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_back_ios_rounded)),
-                Expanded(
-                  child: Container(
-                    // padding: const EdgeInsets.all(10),
-                    child: Image.asset(
-                      vehicle.image,
-                      height: 156,
-                      fit: BoxFit.contain,
+                textAlign: TextAlign.start,
+              ),
+              Row(
+                children: [
+                  const Icon(Icons.star_outlined, color: AppColors.warning),
+                  const SizedBox(width: 5),
+                  Text(
+                    "4.9 (531 reviews)",
+                    style: Styles.largeSecondary.copyWith(
+                      fontSize: 16,
                     ),
                   ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              // casousel slider
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.arrow_back_ios_rounded)),
+                  Expanded(
+                    child: Container(
+                      // padding: const EdgeInsets.all(10),
+                      child: Image.asset(
+                        vehicle.image,
+                        height: 156,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.arrow_forward_ios_rounded)),
+                ],
+              ),
+
+              const SizedBox(height: 20),
+              Text(
+                "Specifications",
+                style: Styles.largeSecondary.copyWith(
+                  fontSize: 20,
                 ),
-                IconButton(
-                    onPressed: () {},
-                    icon: const Icon(Icons.arrow_forward_ios_rounded)),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-            Text(
-              "Specifications",
-              style: Styles.largeSecondary.copyWith(
-                fontSize: 20,
               ),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                for (var item in specifications) SpecificationItem(model: item),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "Car features",
-              style: Styles.largeSecondary.copyWith(
-                fontSize: 20,
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            // car features
-            Container(
-              height: 44,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColorLight.withOpacity(0.1),
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Model",
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    vehicle.modelName,
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
+                  for (var item in specifications)
+                    SpecificationItem(model: item),
                 ],
               ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 44,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColorLight.withOpacity(0.1),
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Capacity",
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    vehicle.capacity.toString(),
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              height: 44,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColorLight.withOpacity(0.1),
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Color",
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    vehicle.color,
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              height: 44,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColorLight.withOpacity(0.1),
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Fuel type",
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    vehicle.fuelType,
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
-            Container(
-              height: 44,
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: AppColors.primaryColorLight.withOpacity(0.1),
-                border: Border.all(color: AppColors.primaryColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Gear type",
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    vehicle.gearType,
-                    style: Styles.mediumSecondary.copyWith(
-                      color: AppColors.secondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                PrimaryBtn(
-                  customWidth: 171,
-                  customHeight: 54,
-                  borderRadius: BorderRadius.circular(8.0),
-                  onTap: () {},
-                  btnText: "Book later",
-                  color: AppColors.white,
-                  textStyle: Styles.smallPrimary,
+              const SizedBox(height: 10),
+              Text(
+                "Car features",
+                style: Styles.largeSecondary.copyWith(
+                  fontSize: 20,
                 ),
-                PrimaryBtn(
+              ),
+
+              const SizedBox(height: 10),
+              // car features
+              Container(
+                height: 44,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColorLight.withOpacity(0.1),
+                  border: Border.all(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Model",
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      vehicle.modelName,
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Container(
+                height: 44,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColorLight.withOpacity(0.1),
+                  border: Border.all(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Capacity",
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      vehicle.capacity.toString(),
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+              Container(
+                height: 44,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColorLight.withOpacity(0.1),
+                  border: Border.all(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Color",
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      vehicle.color,
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+              Container(
+                height: 44,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColorLight.withOpacity(0.1),
+                  border: Border.all(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Fuel type",
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      vehicle.fuelType,
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+              Container(
+                height: 44,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColorLight.withOpacity(0.1),
+                  border: Border.all(color: AppColors.primaryColor),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Gear type",
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      vehicle.gearType,
+                      style: Styles.mediumSecondary.copyWith(
+                        color: AppColors.secondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PrimaryBtn(
                     customWidth: 171,
                     customHeight: 54,
                     borderRadius: BorderRadius.circular(8.0),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        CupertinoPageRoute(
-                          builder: (context) => RentCar(
-                            vehicle: vehicle,
+                    onTap: () {},
+                    btnText: "Book later",
+                    color: AppColors.white,
+                    textStyle: Styles.smallPrimary,
+                  ),
+                  PrimaryBtn(
+                      customWidth: 171,
+                      customHeight: 54,
+                      borderRadius: BorderRadius.circular(8.0),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => RentCar(
+                              vehicle: vehicle,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    btnText: "Ride Now",
-                    color: AppColors.primaryColor,
-                    textStyle: Styles.textSmallWhite),
-              ],
-            )
-          ],
+                        );
+                      },
+                      btnText: "Ride Now",
+                      color: AppColors.primaryColor,
+                      textStyle: Styles.textSmallWhite),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

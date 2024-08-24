@@ -83,10 +83,10 @@ class MenuComponent extends StatelessWidget {
 
           const SizedBox(height: 10),
           // profile avatar
-          CircleAvatar(
+          const CircleAvatar(
             radius: 30,
-            backgroundImage: const AssetImage(
-              'assets/images/avatar.png',
+            backgroundImage: AssetImage(
+              'assets/icons/profile1.png',
             ),
           ),
           const SizedBox(height: 10),
