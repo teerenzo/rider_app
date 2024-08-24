@@ -22,6 +22,7 @@ class InputField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.fillColor,
+    this.onTap,
   }) : super(key: key);
 
   final String hintText;
@@ -42,6 +43,7 @@ class InputField extends StatelessWidget {
   final Icon? prefixIcon;
   final Icon? suffixIcon;
   final Color? fillColor;
+  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +56,7 @@ class InputField extends StatelessWidget {
           width: width * 1,
           child: TextFormField(
             maxLength: maxLength,
+            onTap: onTap as void Function()?,
             cursorColor: AppColors.primaryColor,
             controller: controller,
             readOnly: readOnly,

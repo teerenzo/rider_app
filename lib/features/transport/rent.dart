@@ -80,7 +80,7 @@ class _RentCarState extends State<RentCar> {
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       child: Container(
         padding: const EdgeInsets.all(20),
-        height: SizeConfig.screenH! * 0.87445,
+        height: SizeConfig.screenH! * 0.86,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -132,7 +132,7 @@ class _RentCarState extends State<RentCar> {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
+              const Text(
                 "Charge",
                 style: Styles.mediumSecondary,
               ),
@@ -175,7 +175,7 @@ class _RentCarState extends State<RentCar> {
                 ],
               ),
               const SizedBox(height: 30),
-              Text(
+              const Text(
                 "Select payment method",
                 style: Styles.mediumSecondary,
               ),
@@ -189,8 +189,8 @@ class _RentCarState extends State<RentCar> {
                     });
                   },
                   child: Container(
-                    margin: EdgeInsets.only(bottom: 12),
-                    padding: EdgeInsets.all(16),
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: selectedIndex == index
@@ -210,7 +210,7 @@ class _RentCarState extends State<RentCar> {
                           width: 40,
                           height: 40,
                         ),
-                        SizedBox(width: 16),
+                        const SizedBox(width: 16),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -220,7 +220,7 @@ class _RentCarState extends State<RentCar> {
                                 fontSize: 16,
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               'Expires: ${paymentMethod.expiry}',
                               style: Styles.mediumSecondary.copyWith(
@@ -238,8 +238,8 @@ class _RentCarState extends State<RentCar> {
                   customHeight: 54,
                   borderRadius: BorderRadius.circular(8.0),
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ComfirmRide()));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const ComfirmRide()));
                   },
                   btnText: "Ride Now",
                   color: AppColors.primaryColor,
@@ -297,7 +297,7 @@ class SpecificationItem extends StatelessWidget {
                 ),
               Text(
                 model.title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.secondary,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,

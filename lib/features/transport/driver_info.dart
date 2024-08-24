@@ -192,8 +192,9 @@ class DriverInfoScreen extends StatelessWidget {
                           showDialog(
                               context: context,
                               builder: (context) {
-                                return AlertDialog(
-                                  content: Column(
+                                return Container(
+                                  color: Colors.white,
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Row(
@@ -212,24 +213,33 @@ class DriverInfoScreen extends StatelessWidget {
                                       SvgPicture.asset(
                                         'assets/icons/success.svg',
                                       ),
-                                      SizedBox(height: 20.0),
-                                      Text("Payment Success",
+                                      const SizedBox(height: 20.0),
+                                      const Text("Payment Success",
                                           style: Styles.largeSecondary),
-                                      SizedBox(height: 10.0),
-                                      Text(
+                                      const SizedBox(height: 15.0),
+                                      const Text(
                                         "Your money has been successfully sent to Sergio Ramasis",
                                         style: Styles.smallSecondary,
                                         textAlign: TextAlign.center,
                                       ),
                                       const Divider(),
-                                      SizedBox(height: 20.0),
+                                      const SizedBox(height: 15.0),
+                                      const Text("How is your trip?",
+                                          style: Styles.mediumSecondary),
+                                      const SizedBox(height: 10.0),
+                                      const Text(
+                                          "Youe feedback will help us to improve your driving experience better",
+                                          textAlign: TextAlign.center,
+                                          style: Styles.smallSecondary),
+                                      const SizedBox(height: 20.0),
                                       PrimaryBtn(
+                                        customHeight: 54,
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
                                         borderRadius:
                                             BorderRadius.circular(8.0),
-                                        btnText: 'Back Home',
+                                        btnText: 'Please Feedback',
                                         color: AppColors.primaryColor,
                                       ),
                                     ],

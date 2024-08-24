@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rider_app/features/transport/car_details.dart';
 import 'package:rider_app/models/vehicle.dart';
@@ -74,13 +75,22 @@ class AvailableCars extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Select your transport",
-              style: Styles.largeSecondary.copyWith(fontSize: 24),
+              "Avaiable cars for ride",
+              style: Styles.largeSecondary.copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF5A5A5A)),
             ),
+            const SizedBox(height: 10),
+            Text("18 cars found",
+                style: Styles.mediumSecondary
+                    .copyWith(fontSize: 14, fontWeight: FontWeight.w500)),
             const SizedBox(height: 20),
-            Container(
+            SizedBox(
               height: SizeConfig.screenH! * 0.7,
               child: ListView.builder(
                   itemCount: types.length,
@@ -123,44 +133,61 @@ class VehicleCard extends StatelessWidget {
                   children: [
                     Text(
                       vehicleModel.modelName,
-                      style: Styles.largeSecondary,
+                      style: Styles.largeSecondary
+                          .copyWith(fontSize: 18, fontWeight: FontWeight.w500),
                     ),
                     Row(
                       children: [
                         Text(
                           vehicleModel.gearType,
-                          style: Styles.mediumSecondary,
+                          style: Styles.smallSecondary.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFB8B8B8)),
                         ),
                         // vertical line
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5),
                           width: 1,
                           height: 10,
-                          color: AppColors.secondary,
+                          color: const Color(0xFFB8B8B8),
                         ),
                         Text(
                           '${vehicleModel.capacity} seats',
-                          style: Styles.mediumSecondary,
+                          style: Styles.smallSecondary.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFB8B8B8)),
                         ),
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 5),
                           width: 1,
                           height: 10,
-                          color: AppColors.secondary,
+                          color: const Color(0xFFB8B8B8),
                         ),
                         Text(
                           vehicleModel.fuelType,
-                          style: Styles.mediumSecondary,
+                          style: Styles.smallSecondary.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFFB8B8B8)),
                         ),
                       ],
                     ),
                     Row(
                       children: [
-                        Icon(Icons.location_on, color: AppColors.secondary),
+                        const Icon(
+                          Icons.location_on,
+                          color: AppColors.secondary,
+                          size: 16,
+                        ),
                         const SizedBox(width: 10),
                         Text(
                           "800m (5mins away)",
-                          style: Styles.mediumSecondary,
+                          style: Styles.smallSecondary.copyWith(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -176,6 +203,7 @@ class VehicleCard extends StatelessWidget {
               children: [
                 PrimaryBtn(
                   customWidth: 171,
+                  customHeight: 54,
                   onTap: () {},
                   btnText: "Book later",
                   color: AppColors.white,
@@ -183,6 +211,7 @@ class VehicleCard extends StatelessWidget {
                 ),
                 PrimaryBtn(
                     customWidth: 171,
+                    customHeight: 54,
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
