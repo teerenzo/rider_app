@@ -1,30 +1,40 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:rider_app/main.dart';
+import 'package:rider_app/providers/authenticationProvider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
+  test('register with mock API', () async {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    final authNotifier = container.read(authProvider.notifier);
+    await authNotifier.register(
+        'test@example.com', '0780640237', 'password123', 'emmanuel');
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    expect(container.read(authProvider).isAuthenticated, true);
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  test('login with mock API (success)', () async {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final authNotifier = container.read(authProvider.notifier);
+    await authNotifier.login('test@example.com', 'password123');
+
+    expect(container.read(authProvider).isAuthenticated, true);
+  });
+
+  test('login with mock API (failure)', () async {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+
+    final authNotifier = container.read(authProvider.notifier);
+    await authNotifier.login('wrong@example.com', 'wrongpassword');
+    expect(container.read(authProvider).isAuthenticated, false);
+    expect(container.read(authProvider).errorMessage, "Invalid credentials");
   });
 }
