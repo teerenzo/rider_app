@@ -1,65 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:rider_app/features/authentication/login.dart';
 import 'package:rider_app/features/transport/complaint.dart';
+import 'package:rider_app/providers/authenticationProvider.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:rider_app/widgets/global_layout.dart';
 
-List<MenuItem> menus = [
-  MenuItem(
-    title: 'History',
-    icon: Icons.history_toggle_off_outlined,
-    onTap: () {
-      print('profile');
-    },
-  ),
-  MenuItem(
-    title: 'Complain',
-    icon: Icons.compare_outlined,
-    onTap: () {},
-  ),
-  MenuItem(
-    title: 'Referral',
-    icon: Icons.refresh,
-    onTap: () {
-      print('help');
-    },
-  ),
-  MenuItem(
-    title: 'About Us',
-    icon: Icons.logout,
-    onTap: () {
-      print('logout');
-    },
-  ),
-  MenuItem(
-    title: 'Settings',
-    icon: Icons.logout,
-    onTap: () {
-      print('logout');
-    },
-  ),
-  MenuItem(
-    title: 'Help and Support',
-    icon: Icons.logout,
-    onTap: () {
-      print('logout');
-    },
-  ),
-  MenuItem(
-    title: 'Logout',
-    icon: Icons.logout,
-    onTap: () {
-      print('logout');
-    },
-  ),
-];
-
-class MenuComponent extends StatelessWidget {
+class MenuComponent extends ConsumerStatefulWidget {
   const MenuComponent({super.key});
 
   @override
+  ConsumerState<MenuComponent> createState() => _MenuComponentState();
+}
+
+class _MenuComponentState extends ConsumerState<MenuComponent> {
+  List<MenuItem> menus = [
+    MenuItem(
+      title: 'History',
+      icon: Icons.history_toggle_off_outlined,
+      onTap: () {
+        print('profile');
+      },
+    ),
+    MenuItem(
+      title: 'Complain',
+      icon: Icons.compare_outlined,
+      onTap: () {},
+    ),
+    MenuItem(
+      title: 'Referral',
+      icon: Icons.refresh,
+      onTap: () {
+        print('help');
+      },
+    ),
+    MenuItem(
+      title: 'About Us',
+      icon: Icons.logout,
+      onTap: () {},
+    ),
+    MenuItem(
+      title: 'Settings',
+      icon: Icons.logout,
+      onTap: () {
+        print('logout');
+      },
+    ),
+    MenuItem(
+      title: 'Help and Support',
+      icon: Icons.logout,
+      onTap: () {
+        print('logout');
+      },
+    ),
+    MenuItem(
+      title: 'Logout',
+      icon: Icons.logout,
+      onTap: () {},
+    ),
+  ];
+
+  @override
   Widget build(BuildContext context) {
+    var authPro = ref.watch(authProvider);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Column(
@@ -90,22 +95,21 @@ class MenuComponent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Text('John Doe', style: Styles.largeSecondary),
-          Text('teerenzo.co@gmail.com', style: Styles.smallSecondary),
+          Text(authPro.name != null ? authPro.email.toString() : "",
+              style: Styles.largeSecondary),
+          Text(
+              authPro.email != null
+                  ? authPro.email.toString()
+                  : 'teerenzo.co@gmail.com',
+              style: Styles.smallSecondary),
           const SizedBox(height: 20),
           // menu items
           Column(
             children: menus.map((menu) {
-              return GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ComplaintScreen()));
-                },
-                child: MenuItem(
-                  title: menu.title,
-                  icon: menu.icon,
-                  onTap: menu.onTap,
-                ),
+              return MenuItem(
+                title: menu.title,
+                icon: menu.icon,
+                onTap: menu.onTap,
               );
             }).toList(),
           ),
@@ -115,7 +119,7 @@ class MenuComponent extends StatelessWidget {
   }
 }
 
-class MenuItem extends StatelessWidget {
+class MenuItem extends ConsumerWidget {
   final String title;
   final IconData icon;
   final void Function()? onTap;
@@ -126,23 +130,38 @@ class MenuItem extends StatelessWidget {
       required this.onTap});
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 5.0),
-        Row(
-          children: [
-            SvgPicture.asset(
-              'assets/icons/$title.svg',
-            ),
-            const SizedBox(width: 10),
-            Text(title, style: Styles.smallSecondary),
-          ],
-        ),
-        const SizedBox(height: 5.0),
-        // last
-        if (title != 'Logout') const Divider(),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: title == 'Logout'
+          ? () {
+              ref.read(authProvider.notifier).logout();
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            }
+          : title == 'Complain'
+              ? () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ComplaintScreen()));
+                }
+              : onTap,
+      child: Column(
+        children: [
+          const SizedBox(height: 5.0),
+          Row(
+            children: [
+              SvgPicture.asset(
+                'assets/icons/$title.svg',
+              ),
+              const SizedBox(width: 10),
+              Text(title, style: Styles.smallSecondary),
+            ],
+          ),
+          const SizedBox(height: 5.0),
+          // last
+          if (title != 'Logout') const Divider(),
+        ],
+      ),
     );
   }
 }

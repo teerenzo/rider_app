@@ -26,6 +26,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   bool _isMenuOpen = false;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int _selectedIndex = 0;
 
   void _openDrawer() {
     _scaffoldKey.currentState?.openDrawer();
@@ -53,6 +54,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -64,54 +71,55 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             contentPadding: EdgeInsets.zero,
             isShowBackButton: false,
             scaffoldKey: _scaffoldKey,
-            bottomNavigationBar: Stack(
-              children: [
-                BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.home),
-                      label: 'Home',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite),
-                      label: 'Favourite',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.favorite),
-                      label: 'Wallet',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.local_offer),
-                      label: 'Offer',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Icons.person),
-                      label: 'Profile',
-                    ),
-                  ],
-                  // currentIndex: _selectedIndex,
-                  selectedItemColor: Colors.green,
-                  // onTap: _onItemTapped,
+            floatingActionButton: Container(
+              margin: const EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                'assets/icons/wallet.png',
+                width: 70,
+                height: 70,
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.miniCenterDocked,
+            bottomNavigationBar: BottomNavigationBar(
+              unselectedFontSize: 12,
+              selectedFontSize: 12,
+              items: const <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
                 ),
-                // Custom middle floating button
-                Positioned(
-                  top: -30, // Adjust this value to control the height
-                  left: MediaQuery.of(context).size.width / 2 - 30,
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.green,
-                    onPressed: () {
-                      // _onItemTapped(2); // Set to the middle index
-                    },
-                    child:
-                        Icon(Icons.account_balance_wallet, color: Colors.white),
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite),
+                  label: 'Favourite',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.wallet_membership,
+                    color: AppColors.white,
                   ),
+                  label: 'Wallet',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.local_offer),
+                  label: 'Offer',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
                 ),
               ],
+              currentIndex: _selectedIndex,
+              selectedItemColor: Colors.green,
+              unselectedItemColor: AppColors.secondary,
+              onTap: (index) {
+                // Handle tap, but skip the central empty space
+                if (index != 2) {
+                  _onItemTapped(index);
+                }
+              },
+              type: BottomNavigationBarType.fixed,
             ),
             drawer: AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
@@ -181,7 +189,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
                 Positioned(
-                    bottom: 20,
+                    bottom: 40,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
@@ -243,7 +251,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           // minHeight: SizeConfig.screenH! * 0.3,
                                         ),
                                         builder: (context) {
-                                          return   AddressModal();
+                                          return AddressModal();
                                         });
                                   },
                                   child: Container(

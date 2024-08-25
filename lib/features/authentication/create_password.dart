@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rider_app/features/authentication/login.dart';
+import 'package:rider_app/providers/authenticationProvider.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -7,21 +10,20 @@ import 'package:rider_app/widgets/primary_btn.dart';
 
 import '../../widgets/input_field.dart';
 
-class CreatePasswordScreen extends StatefulWidget {
+class CreatePasswordScreen extends ConsumerStatefulWidget {
   const CreatePasswordScreen({super.key});
 
   @override
-  State<CreatePasswordScreen> createState() => _CreatePasswordScreenState();
+  ConsumerState<CreatePasswordScreen> createState() =>
+      _CreatePasswordScreenState();
 }
 
-class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
+class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final TextEditingController phoneController = TextEditingController();
-
-  final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
+
+  final TextEditingController cpasswordController = TextEditingController();
 
   String initialCountry = 'RW';
 
@@ -54,108 +56,10 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
 
   FocusNode focusNode = FocusNode();
 
-  Widget buildEmailFormField() {
-    return SizedBox(
-      child: Column(
-        children: [
-          Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InputField(
-                  isLast: true,
-                  onChanged: (value) => value,
-                  obscureText: true,
-                  controller: passwordController,
-                  readOnly: isLoading,
-                  hasError: false,
-                  hintText: 'Enter Your New Password',
-                  passwordVisible: _passwordVisible,
-                  changePasswordVisibility: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                InputField(
-                  isLast: true,
-                  onChanged: (value) => value,
-                  obscureText: true,
-                  controller: passwordController,
-                  readOnly: isLoading,
-                  hasError: false,
-                  hintText: 'Confirm Password',
-                  passwordVisible: _passwordVisible,
-                  changePasswordVisibility: () {
-                    setState(() {
-                      _passwordVisible = !_passwordVisible;
-                    });
-                  },
-                ),
-                //forgot password
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Atleast 1 number or a special character',
-                        style: TextStyle(
-                          color: AppColors.error,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 20,
-                ),
-
-                if (false)
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: CircularProgressIndicator(),
-                  )
-                else
-                  PrimaryBtn(
-                    onTap: () {
-                      if (emailController.text.isEmpty ||
-                          passwordController.text.isEmpty) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please fill all fields'),
-                          ),
-                        );
-                        return;
-                      }
-
-                      emailController.clear();
-                      passwordController.clear();
-                    },
-                    btnText: 'Save',
-                    borderRadius: BorderRadius.circular(8.0),
-                    color: AppColors.primaryColor,
-                    textStyle: const TextStyle(
-                      color: AppColors.white,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-    // return an email form field
-  }
-
   @override
   Widget build(BuildContext context) {
+    var authProv = ref.watch(authProvider);
+    var authProviderNotifier = ref.read(authProvider.notifier);
     return GlobalLayout(
       child: SingleChildScrollView(
         child: Padding(
@@ -176,7 +80,132 @@ class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
                 style: Styles.paragraphMediumBlack,
               ),
               const SizedBox(height: 40),
-              buildEmailFormField(),
+              SizedBox(
+                child: Column(
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          InputField(
+                            isLast: true,
+                            onChanged: (value) => value,
+                            obscureText: true,
+                            controller: passwordController,
+                            readOnly: isLoading,
+                            hasError: false,
+                            hintText: 'Enter Your New Password',
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Password is required';
+                              } else if (value.length < 8) {
+                                return 'Password must be at least 8 characters';
+                              } else if (!RegExp(
+                                      r'^(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+                                  .hasMatch(value)) {
+                                return 'Password must contain at least 1 number or a special character';
+                              }
+                              return null; // Return null if the input is valid
+                            },
+                            passwordVisible: _passwordVisible,
+                            changePasswordVisibility: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          InputField(
+                            isLast: true,
+                            onChanged: (value) => value,
+                            obscureText: true,
+                            controller: cpasswordController,
+                            readOnly: isLoading,
+                            hasError: false,
+                            hintText: 'Confirm Password',
+                            passwordVisible: _passwordVisible,
+                            changePasswordVisibility: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              TextButton(
+                                onPressed: () {},
+                                child: const Text(
+                                  'Atleast 1 number or a special character',
+                                  style: TextStyle(
+                                    color: AppColors.error,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          if (authProv.isLoading == true)
+                            Container(
+                              alignment: Alignment.center,
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: CircularProgressIndicator(),
+                            )
+                          else
+                            PrimaryBtn(
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  await authProviderNotifier
+                                      .createPassword(passwordController.text);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content:
+                                          Text('Password created successfully'),
+                                    ),
+                                  );
+                                  await Future.delayed(Duration(seconds: 10));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginScreen()));
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(_formKey.currentState!
+                                          .validate()
+                                          .toString()),
+                                    ),
+                                  );
+                                }
+                                // if (cpasswordController.text.isEmpty ||
+                                //     passwordController.text.isEmpty) {
+                                //   ScaffoldMessenger.of(context).showSnackBar(
+                                //     const SnackBar(
+                                //       content: Text('Please fill all fields'),
+                                //     ),
+                                //   );
+                                //   return;
+                                // }
+
+                                // passwordController.clear();
+                              },
+                              btnText: 'Save',
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: AppColors.primaryColor,
+                              textStyle: const TextStyle(
+                                color: AppColors.white,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),

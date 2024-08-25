@@ -7,7 +7,6 @@ import 'package:rider_app/values/size_config.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:rider_app/widgets/custom_scaffold.dart';
 import 'package:rider_app/widgets/primary_btn.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 
 class DriverInfoScreen extends StatelessWidget {
   @override
@@ -141,7 +140,7 @@ class DriverInfoScreen extends StatelessWidget {
                             )
                           ],
                         ),
-                        Spacer(),
+                        const Spacer(),
                         Image.asset(
                           'assets/icons/CarSm.png',
                           width: 80,
@@ -149,8 +148,8 @@ class DriverInfoScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 24.0),
-                    Row(
+                    const SizedBox(height: 24.0),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Payment method", style: Styles.mediumSecondary),
@@ -158,7 +157,7 @@ class DriverInfoScreen extends StatelessWidget {
                             style: Styles.headingExtraLargeTitleBlack),
                       ],
                     ),
-                    SizedBox(height: 8.0),
+                    const SizedBox(height: 8.0),
                     Container(
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
@@ -171,8 +170,8 @@ class DriverInfoScreen extends StatelessWidget {
                             'assets/icons/visa.png',
                             width: 40,
                           ),
-                          SizedBox(width: 16.0),
-                          Column(
+                          const SizedBox(width: 16.0),
+                          const Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text("**** **** **** 8970",
@@ -189,63 +188,7 @@ class DriverInfoScreen extends StatelessWidget {
                     Center(
                       child: PrimaryBtn(
                         onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Container(
-                                  color: Colors.white,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          IconButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            icon: Icon(Icons.close),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 16.0),
-                                      SvgPicture.asset(
-                                        'assets/icons/success.svg',
-                                      ),
-                                      const SizedBox(height: 20.0),
-                                      const Text("Payment Success",
-                                          style: Styles.largeSecondary),
-                                      const SizedBox(height: 15.0),
-                                      const Text(
-                                        "Your money has been successfully sent to Sergio Ramasis",
-                                        style: Styles.smallSecondary,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      const Divider(),
-                                      const SizedBox(height: 15.0),
-                                      const Text("How is your trip?",
-                                          style: Styles.mediumSecondary),
-                                      const SizedBox(height: 10.0),
-                                      const Text(
-                                          "Youe feedback will help us to improve your driving experience better",
-                                          textAlign: TextAlign.center,
-                                          style: Styles.smallSecondary),
-                                      const SizedBox(height: 20.0),
-                                      PrimaryBtn(
-                                        customHeight: 54,
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        btnText: 'Please Feedback',
-                                        color: AppColors.primaryColor,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              });
+                          showPaymentSuccessDialog(context);
                         },
                         btnText: 'Pay',
                         color: AppColors.primaryColor,
@@ -260,4 +203,67 @@ class DriverInfoScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void showPaymentSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.close),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            SvgPicture.asset(
+              'assets/icons/success.svg',
+            ),
+            const SizedBox(height: 20.0),
+            const Text("Payment Success", style: Styles.largeSecondary),
+            const SizedBox(height: 15.0),
+            const Text(
+              "Your money has been successfully sent to Sergio Ramasis",
+              style: Styles.smallSecondary,
+              textAlign: TextAlign.center,
+            ),
+            const Divider(),
+            const SizedBox(height: 15.0),
+            const Text("How is your trip?", style: Styles.mediumSecondary),
+            const SizedBox(height: 10.0),
+            const Text(
+                "Youe feedback will help us to improve your driving experience better",
+                textAlign: TextAlign.center,
+                style: Styles.smallSecondary),
+            const SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: PrimaryBtn(
+                customHeight: 54,
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                borderRadius: BorderRadius.circular(8.0),
+                btnText: 'Please Feedback',
+                color: AppColors.primaryColor,
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }

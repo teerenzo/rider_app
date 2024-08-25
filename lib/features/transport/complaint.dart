@@ -1,41 +1,40 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rider_app/providers/complaintProvider.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/size_config.dart';
 import 'package:rider_app/values/styles.dart';
+import 'package:rider_app/widgets/global_layout.dart';
 import 'package:rider_app/widgets/primary_btn.dart';
 
-class ComplaintScreen extends StatefulWidget {
+class ComplaintScreen extends ConsumerStatefulWidget {
   @override
   _ComplaintScreenState createState() => _ComplaintScreenState();
 }
 
-class _ComplaintScreenState extends State<ComplaintScreen> {
+class _ComplaintScreenState extends ConsumerState<ComplaintScreen> {
   String? _selectedIssue;
   TextEditingController _complaintController = TextEditingController();
-  final List<Map<String, String>> _reviews = [
-    {
-      "title": "Vehicle Arrived late",
-      "description": "The driver arrived late and I missed my trip",
-      "time": "09:24"
-    },
-    {
-      "title": "Vehicle Arrived late",
-      "description": "The driver arrived late and I missed my trip",
-      "time": "09:24"
-    },
-    {
-      "title": "Vehicle Arrived late",
-      "description": "The driver arrived late and I missed my trip",
-      "time": "09:24"
-    },
-  ];
+
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    ref.read(complaintsProvider.notifier).loadFromSessionStorage();
+    super.initState();
+  }
 
   void _submitComplaint() {
     if (_complaintController.text.length >= 10 && _selectedIssue != null) {
-      // Submit complaint logic here
-      print("Complaint submitted: ${_complaintController.text}");
-      // Clear the form after submission
+      final complaints = ref.watch(complaintsProvider);
+      ref
+          .read(complaintsProvider.notifier)
+          .createComplaint(_selectedIssue!, _complaintController.text);
+
       setState(() {
         _complaintController.clear();
         _selectedIssue = null;
@@ -43,11 +42,94 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
     }
   }
 
+  void _showComplaintDialog({Complaint? complaint, int? index}) {
+    if (complaint != null) {
+      _titleController.text = complaint.title;
+      _descriptionController.text = complaint.description;
+    } else {
+      _titleController.clear();
+      _descriptionController.clear();
+    }
+
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(complaint == null ? 'New Complaint' : 'Edit Complaint'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(labelText: 'Title'),
+                ),
+                TextField(
+                  controller: _descriptionController,
+                  decoration: InputDecoration(labelText: 'Description'),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  if (complaint == null) {
+                    ref.read(complaintsProvider.notifier).editComplaint(
+                        complaint!.id,
+                        _titleController.text,
+                        _descriptionController.text);
+                  } else {
+                    ref.read(complaintsProvider.notifier).editComplaint(
+                        complaint.id,
+                        _titleController.text,
+                        _descriptionController.text);
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text('Save'),
+              ),
+            ],
+          );
+        });
+  }
+
+  _showDeleteDialog({required String id}) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Delete Complaint'),
+            content: Text('Are you sure you want to delete this complaint?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  ref.read(complaintsProvider.notifier).deleteComplaint(id);
+                  Navigator.pop(context);
+                },
+                child: Text('Delete'),
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Complaint Form')),
-      body: Padding(
+    final complaints = ref.watch(complaintsProvider);
+    return GlobalLayout(
+      child: Container(
+        height: SizeConfig.screenH! * 0.8,
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -91,6 +173,7 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
             SizedBox(height: 16.0),
             PrimaryBtn(
                 onTap: () {
+                  _submitComplaint();
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -138,13 +221,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                 },
                 btnText: 'Submit',
                 color: AppColors.primaryColor),
-            const SizedBox(height: 20.0),
+            const SizedBox(height: 40.0),
             const Text("Recent Reviews",
                 style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 10.0),
             Expanded(
               child: ListView.builder(
-                itemCount: _reviews.length,
+                itemCount: complaints.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.only(bottom: 8.0),
@@ -160,17 +243,29 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(_reviews[index]["title"]!,
+                              Text(complaints[index].title,
                                   style: Styles.mediumSecondary
                                       .copyWith(fontSize: 14)),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Icon(Icons.edit_outlined),
+                                  GestureDetector(
+                                      onTap: () {
+                                        _showComplaintDialog(
+                                            complaint: complaints[index],
+                                            index: index);
+                                      },
+                                      child: Icon(Icons.edit_outlined)),
                                   // delete icon
-                                  Icon(
-                                    Icons.delete_outlined,
-                                    color: AppColors.error,
+                                  GestureDetector(
+                                    onTap: () {
+                                      _showDeleteDialog(
+                                          id: complaints[index].id);
+                                    },
+                                    child: Icon(
+                                      Icons.delete_outlined,
+                                      color: AppColors.error,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -180,13 +275,13 @@ class _ComplaintScreenState extends State<ComplaintScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(_reviews[index]["description"]!,
+                              Text(complaints[index].description,
                                   style: const TextStyle(
                                       color: AppColors.fieldGray,
                                       fontSize: 12)),
                               //09:24
                               Text(
-                                _reviews[index]["time"]!,
+                                "09:24",
                                 style: Styles.smallSecondary
                                     .copyWith(fontWeight: FontWeight.w500),
                               ),
