@@ -5,6 +5,7 @@ import 'package:rider_app/features/authentication/login.dart';
 import 'package:rider_app/features/transport/complaint.dart';
 import 'package:rider_app/providers/authenticationProvider.dart';
 import 'package:rider_app/values/colors.dart';
+import 'package:rider_app/values/size_config.dart';
 import 'package:rider_app/values/styles.dart';
 import 'package:rider_app/widgets/global_layout.dart';
 
@@ -66,6 +67,14 @@ class _MenuComponentState extends ConsumerState<MenuComponent> {
   Widget build(BuildContext context) {
     var authPro = ref.watch(authProvider);
     return Container(
+      width: SizeConfig.screenW! * 0.6,
+      decoration: const BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(80),
+          bottomRight: Radius.circular(80),
+        ),
+      ),
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

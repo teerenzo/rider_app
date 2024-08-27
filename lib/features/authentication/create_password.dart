@@ -133,20 +133,6 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                               });
                             },
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  'Atleast 1 number or a special character',
-                                  style: TextStyle(
-                                    color: AppColors.error,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                           const SizedBox(
                             height: 20,
                           ),
@@ -159,7 +145,17 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                           else
                             PrimaryBtn(
                               onTap: () async {
-                                if (_formKey.currentState!.validate()) {
+                                if (passwordController.text.isNotEmpty &&
+                                    cpasswordController.text.isNotEmpty) {
+                                  if (passwordController.text !=
+                                      cpasswordController.text) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Passwords do not match'),
+                                      ),
+                                    );
+                                    return;
+                                  }
                                   await authProviderNotifier
                                       .createPassword(passwordController.text);
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -168,30 +164,17 @@ class _CreatePasswordScreenState extends ConsumerState<CreatePasswordScreen> {
                                           Text('Password created successfully'),
                                     ),
                                   );
-                                  await Future.delayed(Duration(seconds: 10));
+                                  await Future.delayed(Duration(seconds: 4));
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) =>
                                           const LoginScreen()));
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(_formKey.currentState!
-                                          .validate()
-                                          .toString()),
+                                    const SnackBar(
+                                      content: Text('Please fill all fields'),
                                     ),
                                   );
                                 }
-                                // if (cpasswordController.text.isEmpty ||
-                                //     passwordController.text.isEmpty) {
-                                //   ScaffoldMessenger.of(context).showSnackBar(
-                                //     const SnackBar(
-                                //       content: Text('Please fill all fields'),
-                                //     ),
-                                //   );
-                                //   return;
-                                // }
-
-                                // passwordController.clear();
                               },
                               btnText: 'Save',
                               borderRadius: BorderRadius.circular(8.0),

@@ -121,23 +121,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               },
               type: BottomNavigationBarType.fixed,
             ),
-            drawer: AnimatedPositioned(
-              duration: const Duration(milliseconds: 300),
-              left: _isMenuOpen ? 0 : -250,
-              top: 0,
-              bottom: 0,
-              child: Container(
-                width: SizeConfig.screenW! * 0.6,
-                decoration: const BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(80),
-                    bottomRight: Radius.circular(80),
-                  ),
-                ),
-                child: const MenuComponent(),
-              ),
-            ),
+            drawer: const MenuComponent(),
             body: Stack(
               children: [
                 if (_isMenuOpen)

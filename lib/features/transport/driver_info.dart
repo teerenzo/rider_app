@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rider_app/features/home/home.dart';
 import 'package:rider_app/features/home/map_container.dart';
 import 'package:rider_app/values/colors.dart';
 import 'package:rider_app/values/size_config.dart';
@@ -254,7 +255,8 @@ void showPaymentSuccessDialog(BuildContext context) {
               child: PrimaryBtn(
                 customHeight: 54,
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
                 borderRadius: BorderRadius.circular(8.0),
                 btnText: 'Please Feedback',

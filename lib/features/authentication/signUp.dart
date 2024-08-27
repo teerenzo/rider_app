@@ -160,8 +160,12 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          DropdownButton<String>(
+                          DropdownButtonFormField<String>(
                             borderRadius: BorderRadius.circular(8),
+                            decoration: const InputDecoration(
+                              labelText: "Select Issue",
+                              border: OutlineInputBorder(),
+                            ),
                             hint: gender == null
                                 ? const Text('Select..')
                                 : Text(
@@ -169,10 +173,6 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                                     style:
                                         const TextStyle(color: AppColors.black),
                                   ),
-                            isExpanded: true,
-                            iconSize: 30,
-                            style: const TextStyle(color: Colors.black),
-                            dropdownColor: AppColors.white,
                             items: <String>['Male', 'Female', 'Other']
                                 .map((String value) {
                               return DropdownMenuItem<String>(
